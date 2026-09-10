@@ -1,0 +1,52 @@
+{
+  "roles": ["super_admin", "it_admin", "asset_admin", "software_admin", "auditor"],
+  "permissions": {
+    "super_admin": {
+      "identity": { "read": true, "create": true, "update": true, "delete": true, "export": true },
+      "groups": { "read": true, "create": true, "update": true, "delete": true, "sync": true },
+      "assets": { "read": true, "create": true, "update": true, "delete": true, "assign": true },
+      "credentials": { "read": true, "reveal": true, "rotate": true },
+      "software": { "read": true, "create": true, "update": true, "delete": true },
+      "audit": { "read": true, "delete": false }
+    },
+    "it_admin": {
+      "identity": { "read": true, "create": true, "update": true, "delete": true, "export": true },
+      "groups": { "read": true, "create": true, "update": true, "delete": true, "sync": true },
+      "assets": { "read": true, "create": true, "update": true, "delete": true, "assign": true },
+      "credentials": { "read": true, "reveal": true, "rotate": true },
+      "software": { "read": true, "create": true, "update": true, "delete": true },
+      "audit": { "read": false, "delete": false }
+    },
+    "asset_admin": {
+      "identity": { "read": true, "create": false, "update": false, "delete": false, "export": false },
+      "groups": { "read": false, "create": false, "update": false, "delete": false, "sync": false },
+      "assets": { "read": true, "create": true, "update": true, "delete": false, "assign": true },
+      "credentials": { "read": true, "reveal": false, "rotate": true },
+      "software": { "read": true, "create": false, "update": false, "delete": false },
+      "audit": { "read": false, "delete": false }
+    },
+    "software_admin": {
+      "identity": { "read": true, "create": false, "update": false, "delete": false, "export": false },
+      "groups": { "read": false, "create": false, "update": false, "delete": false, "sync": false },
+      "assets": { "read": true, "create": false, "update": false, "delete": false, "assign": false },
+      "credentials": { "read": false, "reveal": false, "rotate": false },
+      "software": { "read": true, "create": true, "update": true, "delete": true },
+      "audit": { "read": false, "delete": false }
+    },
+    "auditor": {
+      "identity": { "read": true, "create": false, "update": false, "delete": false, "export": false },
+      "groups": { "read": true, "create": false, "update": false, "delete": false, "sync": false },
+      "assets": { "read": true, "create": false, "update": false, "delete": false, "assign": false },
+      "credentials": { "read": false, "reveal": false, "rotate": false },
+      "software": { "read": true, "create": false, "update": false, "delete": false },
+      "audit": { "read": true, "delete": false }
+    }
+  },
+  "sensitiveOperations": [
+    "credential.reveal",
+    "account.export",
+    "permission.change",
+    "device.delete",
+    "google_workspace.sync"
+  ]
+}

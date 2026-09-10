@@ -1,0 +1,122 @@
+{
+  "totalTables": 13,
+  "tables": [
+    {
+      "name": "departments",
+      "isReference": true,
+      "primaryKey": "id",
+      "uniqueColumns": ["name", "code"],
+      "columns": ["id", "name", "code", "created_at"]
+    },
+    {
+      "name": "account_roles",
+      "isReference": true,
+      "primaryKey": "id",
+      "uniqueColumns": ["name"],
+      "columns": ["id", "name", "level"]
+    },
+    {
+      "name": "domains",
+      "isReference": true,
+      "primaryKey": "id",
+      "uniqueColumns": ["name"],
+      "columns": ["id", "name", "is_primary"]
+    },
+    {
+      "name": "accounts",
+      "primaryKey": "id",
+      "uniqueColumns": ["email"],
+      "foreignKeys": [
+        { "column": "department_id", "references": "departments(id)", "onDelete": "SET NULL" },
+        { "column": "account_role_id", "references": "account_roles(id)", "onDelete": "SET NULL" }
+      ],
+      "columns": ["id", "full_name", "display_name", "email", "previous_email", "account_type", "department_id", "account_role_id", "status", "notes", "migration_notes", "created_at", "updated_at"]
+    },
+    {
+      "name": "account_domains",
+      "primaryKey": ["account_id", "domain_id"],
+      "foreignKeys": [
+        { "column": "account_id", "references": "accounts(id)", "onDelete": "CASCADE" },
+        { "column": "domain_id", "references": "domains(id)", "onDelete": "CASCADE" }
+      ],
+      "columns": ["account_id", "domain_id"]
+    },
+    {
+      "name": "google_groups",
+      "primaryKey": "id",
+      "uniqueColumns": ["email", "google_id"],
+      "columns": ["id", "name", "email", "description", "member_count", "google_id", "sync_status", "last_synced_at", "created_at", "updated_at"]
+    },
+    {
+      "name": "group_memberships",
+      "primaryKey": "id",
+      "uniqueColumns": [["group_id", "account_id"]],
+      "foreignKeys": [
+        { "column": "group_id", "references": "google_groups(id)", "onDelete": "CASCADE" },
+        { "column": "account_id", "references": "accounts(id)", "onDelete": "CASCADE" }
+      ],
+      "columns": ["id", "group_id", "account_id", "role", "source", "added_at", "created_at"]
+    },
+    {
+      "name": "devices",
+      "primaryKey": "id",
+      "uniqueColumns": ["asset_number"],
+      "columns": ["id", "asset_number", "brand", "model", "computer_name", "status", "purchased_at", "has_antivirus", "notes", "created_at", "updated_at"]
+    },
+    {
+      "name": "device_specifications",
+      "primaryKey": "id",
+      "uniqueColumns": ["device_id"],
+      "foreignKeys": [
+        { "column": "device_id", "references": "devices(id)", "onDelete": "CASCADE" }
+      ],
+      "columns": ["id", "device_id", "processor", "ram", "storage"]
+    },
+    {
+      "name": "device_assignments",
+      "primaryKey": "id",
+      "foreignKeys": [
+        { "column": "device_id", "references": "devices(id)", "onDelete": "CASCADE" },
+        { "column": "account_id", "references": "accounts(id)", "onDelete": "SET NULL" },
+        { "column": "custodian_id", "references": "accounts(id)", "onDelete": "SET NULL" }
+      ],
+      "columns": ["id", "device_id", "account_id", "custodian_id", "assigned_at", "returned_at", "notes", "created_at"]
+    },
+    {
+      "name": "device_credentials",
+      "primaryKey": "id",
+      "foreignKeys": [
+        { "column": "device_id", "references": "devices(id)", "onDelete": "CASCADE" }
+      ],
+      "columns": ["id", "device_id", "login_email", "pin_hash", "pin_last_rotated_at", "notes", "created_at", "updated_at"]
+    },
+    {
+      "name": "applications",
+      "primaryKey": "id",
+      "uniqueColumns": ["name"],
+      "foreignKeys": [
+        { "column": "department_id", "references": "departments(id)", "onDelete": "SET NULL" }
+      ],
+      "columns": ["id", "name", "description", "department_id", "category", "subscription_type", "status", "website_url", "created_at", "updated_at"]
+    },
+    {
+      "name": "audit_events",
+      "primaryKey": "id",
+      "foreignKeys": [
+        { "column": "actor_id", "references": "accounts(id)", "onDelete": "SET NULL" }
+      ],
+      "columns": ["id", "actor_id", "action", "entity_type", "entity_id", "metadata", "ip_address", "created_at"]
+    }
+  ],
+  "enums": {
+    "account_type_enum": ["personal", "service", "shared"],
+    "account_status_enum": ["active", "suspended", "archived"],
+    "sync_status_enum": ["synced", "pending", "conflict", "error"],
+    "group_role_enum": ["member", "manager", "owner"],
+    "group_source_enum": ["spreadsheet", "google_sync", "manual"],
+    "device_status_enum": ["assigned", "available", "reserve", "decommissioned"],
+    "application_category_enum": ["productivity", "security", "development", "communication", "design", "marketing", "finance", "operations", "other"],
+    "subscription_type_enum": ["free", "paid", "freemium"],
+    "application_status_enum": ["active", "deprecated", "evaluating"]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "totalAccounts": 42,
+  "accountTypes": {
+    "personal": 40,
+    "service": 1,
+    "shared": 1
+  },
+  "accounts": [
+    {
+      "fullName": "Jean Amanda Stevany Loupatty",
+      "displayName": "Amanda",
+      "email": "amanda@leadgeeksinc.com",
+      "previousEmail": "amanda@leadgeeksprospecting.com",
+      "departmentCode": "MNG",
+      "accountRole": "Top Management",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com", "leadgeeksinc.co"],
+      "status": "active",
+      "notes": "Director"
+    },
+    {
+      "fullName": "Devi Indriani",
+      "displayName": "Devi",
+      "email": "devi@leadgeeksinc.com",
+      "previousEmail": "devi@leadgeeksprospecting.com",
+      "departmentCode": "OPS",
+      "accountRole": "Leaders",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com", "leadgeeksinc.co"],
+      "status": "active",
+      "notes": "Operations Lead"
+    },
+    {
+      "fullName": "Aditya Pratama",
+      "displayName": "Adit",
+      "email": "adit@leadgeeksinc.com",
+      "previousEmail": null,
+      "departmentCode": "ITE",
+      "accountRole": "Leaders",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com"],
+      "status": "active",
+      "notes": "IT Lead"
+    },
+    {
+      "fullName": "Ahmad Fajri",
+      "displayName": "Fajri",
+      "email": "fajri@leadgeeksinc.com",
+      "previousEmail": null,
+      "departmentCode": "ITE",
+      "accountRole": "Staff",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com"],
+      "status": "active",
+      "notes": "IT Infrastructure"
+    },
+    {
+      "fullName": "Rian Hidayat",
+      "displayName": "Rian",
+      "email": "rian@leadgeeksinc.com",
+      "previousEmail": "rian@leadgeeksprospecting.com",
+      "departmentCode": "GRW",
+      "accountRole": "Leaders",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com", "leadgeeksinc.co"],
+      "status": "active",
+      "notes": "Growth Manager"
+    },
+    {
+      "fullName": "Sarah Wijaya",
+      "displayName": "Sarah",
+      "email": "sarah@leadgeeksinc.com",
+      "previousEmail": null,
+      "departmentCode": "EXP",
+      "accountRole": "Leaders",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com"],
+      "status": "active",
+      "notes": "Experience Lead"
+    },
+    {
+      "fullName": "Siti Nurhaliza",
+      "displayName": "Siti",
+      "email": "siti@leadgeeksinc.com",
+      "previousEmail": null,
+      "departmentCode": "HRD",
+      "accountRole": "Leaders",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com"],
+      "status": "active",
+      "notes": "HR Lead"
+    },
+    {
+      "fullName": "Budi Santoso",
+      "displayName": "Budi",
+      "email": "budi@leadgeeksinc.com",
+      "previousEmail": null,
+      "departmentCode": "FAC",
+      "accountRole": "Leaders",
+      "accountType": "personal",
+      "domains": ["leadgeeksinc.com"],
+      "status": "active",
+      "notes": "Finance Lead"
+    },
+    {
+      "fullName": "LeadGeeks Sales",
+      "displayName": "Sales Service",
+      "email": "sales@leadgeeksinc.com",
+      "previousEmail": null,
+      "departmentCode": "GRW",
+      "accountRole": "Commercial",
+      "accountType": "service",
+      "domains": ["leadgeeksinc.com"],
+      "status": "active",
+      "notes": "Service account for outbound sales"
+    },
+    {
+      "fullName": "LeadGeeks Shared Admin",
+      "displayName": "Admin Shared",
+      "email": "admin@leadgeeksinc.co",
+      "previousEmail": null,
+      "departmentCode": "MNG",
+      "accountRole": "Top Management",
+      "accountType": "shared",
+      "domains": ["leadgeeksinc.co"],
+      "status": "active",
+      "notes": "Shared administrator mailbox"
+    }
+  ]
+}
