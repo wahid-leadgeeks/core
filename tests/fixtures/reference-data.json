@@ -1,0 +1,37 @@
+{
+  "departments": [
+    { "name": "Management Office", "code": "MNG" },
+    { "name": "Operations", "code": "OPS" },
+    { "name": "Growth", "code": "GRW" },
+    { "name": "Experience", "code": "EXP" },
+    { "name": "Human Resource and Development", "code": "HRD" },
+    { "name": "Information and Technology", "code": "ITE" },
+    { "name": "Finance and Accounting", "code": "FAC" },
+    { "name": "General", "code": "GNR" }
+  ],
+  "accountRoles": [
+    { "name": "Top Management", "level": 1 },
+    { "name": "Leaders", "level": 2 },
+    { "name": "Non-Leaders", "level": 3 },
+    { "name": "Staff", "level": 4 },
+    { "name": "Commercial", "level": 5 }
+  ],
+  "domains": [
+    { "name": "leadgeeksinc.com", "isPrimary": true },
+    { "name": "leadgeeksinc.co", "isPrimary": false },
+    { "name": "leadgeeksprospecting.com", "isPrimary": false }
+  ],
+  "departmentNormalizationMap": {
+    "Management": "Management Office",
+    "Management Office": "Management Office",
+    "Operations": "Operations",
+    "Growth": "Growth",
+    "Experience": "Experience",
+    "HRD": "Human Resource and Development",
+    "Human Resource and Development": "Human Resource and Development",
+    "IT": "Information and Technology",
+    "Information and Technology": "Information and Technology",
+    "Finance and Accounting": "Finance and Accounting",
+    "General": "General"
+  }
+}

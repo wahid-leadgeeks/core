@@ -1,0 +1,104 @@
+{
+  "totalGroups": 15,
+  "groups": [
+    {
+      "name": "LeadGeeks Team",
+      "email": "team@leadgeeksinc.com",
+      "expectedMemberCount": 38,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Operations Team",
+      "email": "operations@leadgeeksinc.com",
+      "expectedMemberCount": 20,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Growth Team",
+      "email": "growth@leadgeeksinc.com",
+      "expectedMemberCount": 8,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Experience Team",
+      "email": "experience@leadgeeksinc.com",
+      "expectedMemberCount": 6,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks HRD Team",
+      "email": "hrd@leadgeeksinc.com",
+      "expectedMemberCount": 3,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks IT Team",
+      "email": "it@leadgeeksinc.com",
+      "expectedMemberCount": 4,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Finance Team",
+      "email": "finance@leadgeeksinc.com",
+      "expectedMemberCount": 3,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Management",
+      "email": "management@leadgeeksinc.com",
+      "expectedMemberCount": 5,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Leaders",
+      "email": "leaders@leadgeeksinc.com",
+      "expectedMemberCount": 9,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Commercial",
+      "email": "commercial@leadgeeksinc.com",
+      "expectedMemberCount": 6,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Staff",
+      "email": "staff@leadgeeksinc.com",
+      "expectedMemberCount": 24,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Tech & Infra",
+      "email": "tech@leadgeeksinc.com",
+      "expectedMemberCount": 5,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Client Services",
+      "email": "client.services@leadgeeksinc.com",
+      "expectedMemberCount": 12,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Operations Calendar",
+      "email": "operations.calendar@leadgeeksinc.co",
+      "expectedMemberCount": 20,
+      "syncStatus": "pending"
+    },
+    {
+      "name": "LeadGeeks Company Calendar",
+      "email": "company.calendar@leadgeeksinc.co",
+      "expectedMemberCount": 42,
+      "syncStatus": "pending"
+    }
+  ],
+  "sampleMemberships": [
+    { "groupEmail": "team@leadgeeksinc.com", "memberEmail": "amanda@leadgeeksinc.com", "role": "owner" },
+    { "groupEmail": "team@leadgeeksinc.com", "memberEmail": "devi@leadgeeksinc.com", "role": "member" },
+    { "groupEmail": "team@leadgeeksinc.com", "memberEmail": "adit@leadgeeksinc.com", "role": "member" },
+    { "groupEmail": "team@leadgeeksinc.com", "memberEmail": "rian@leadgeeksinc.com", "role": "member" },
+    { "groupEmail": "operations@leadgeeksinc.com", "memberEmail": "devi@leadgeeksinc.com", "role": "manager" },
+    { "groupEmail": "operations.calendar@leadgeeksinc.co", "memberEmail": "devi@leadgeeksinc.com", "role": "member" },
+    { "groupEmail": "team@leadgeeksinc.com", "memberEmail": "amanda@leadgeeksprospecting.com", "role": "member", "notes": "resolved via previous_email" }
+  ]
+}

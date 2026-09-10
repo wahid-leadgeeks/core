@@ -1,0 +1,21 @@
+# Progress — spec_miner_survey_1
+
+- **Last visited**: 2026-09-09T00:20:00+07:00
+- **Status**: Completed Survey on Data Model, DB Architecture & Spreadsheet Ingestion
+- **Completed**:
+  - [x] Initialized DISPATCH.md, BRIEFING.md, progress.md
+  - [x] Read ORIGINAL_REQUEST.md
+  - [x] Read DATA_MODEL.md
+  - [x] Read ARCHITECTURE.md
+  - [x] Read docs/data/spreadsheet-mapping.md
+  - [x] Read docs/domains/ (identity, groups, assets, access, software, automation)
+  - [x] Read docs/adr/ (ADR-001 through ADR-005)
+  - [x] Read PRD.md, DESIGN.md, ROADMAP.md, TODO.md, README.md
+  - [x] Inspected source spreadsheet metadata in /home/noah/Documents/sheets/
+  - [x] Extracted comprehensive 13-table schema (12 domain tables + audit_events)
+  - [x] Documented reference seed data (8 departments, 5 account roles, 3 domains)
+  - [x] Specified full spreadsheet ingestion pipeline, normalization, fuzzy matching, and credential security
+  - [x] Formulated Features Discovered and Edge Cases tables
+  - [x] Wrote 5-component handoff report to /home/noah/project/core/.agents/spec_miner_survey_1/handoff.md
+  - [x] Notified parent orchestrator
+- **Current Task**: Completed

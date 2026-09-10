@@ -1,0 +1,66 @@
+--- a/src/app/accounts/page.tsx
++++ b/src/app/accounts/page.tsx
+@@ -210,7 +210,7 @@ export default function AccountsPage() {
+                 ) : filtered.length === 0 ? (
+                   <tr>
+                     <td colSpan={7} className="py-12 text-center text-slate-500 font-mono text-xs">
+-                      No matching accounts found for query "{query}".
++                      No matching accounts found for query &quot;{query}&quot;.
+                     </td>
+                   </tr>
+                 ) : (
+--- a/src/app/assets/page.tsx
++++ b/src/app/assets/page.tsx
+@@ -234,7 +234,7 @@ export default function AssetsPage() {
+             </div>
+           ) : filtered.length === 0 ? (
+             <div className="col-span-full py-16 text-center text-slate-500 font-mono text-xs">
+-              No devices found matching query "{query}".
++              No devices found matching query &quot;{query}&quot;.
+             </div>
+           ) : (
+             filtered.map((dev) => (
+--- a/src/app/audit/page.tsx
++++ b/src/app/audit/page.tsx
+@@ -256,7 +256,7 @@ export default function AuditPage() {
+                 ) : filtered.length === 0 ? (
+                   <tr>
+                     <td colSpan={7} className="py-16 text-center text-slate-500 text-xs">
+-                      No audit events matching "{query}".
++                      No audit events matching &quot;{query}&quot;.
+                     </td>
+                   </tr>
+                 ) : (
+--- a/src/app/groups/[id]/page.tsx
++++ b/src/app/groups/[id]/page.tsx
+@@ -200,7 +200,7 @@ export default function GroupDetailPage() {
+                 {filteredMembers.length === 0 ? (
+                   <tr>
+                     <td colSpan={6} className="py-12 text-center text-slate-500 font-mono text-xs">
+-                      No members match search query "{query}".
++                      No members match search query &quot;{query}&quot;.
+                     </td>
+                   </tr>
+                 ) : (
+--- a/src/app/groups/page.tsx
++++ b/src/app/groups/page.tsx
+@@ -102,7 +102,7 @@ export default function GroupsPage() {
+             </div>
+           ) : filtered.length === 0 ? (
+             <div className="col-span-full py-12 text-center text-slate-500 font-mono text-xs">
+-              No Google Groups matching query "{query}".
++              No Google Groups matching query &quot;{query}&quot;.
+             </div>
+           ) : (
+             filtered.map((group) => (
+--- a/src/app/software/page.tsx
++++ b/src/app/software/page.tsx
+@@ -227,7 +227,7 @@ export default function SoftwarePage() {
+             </div>
+           ) : filtered.length === 0 ? (
+             <div className="col-span-full py-16 text-center text-slate-500 font-mono text-xs">
+-              No software applications matching "{query}".
++              No software applications matching &quot;{query}&quot;.
+             </div>
+           ) : (
+             filtered.map((app) => (

@@ -1,0 +1,100 @@
+{
+  "totalApplications": 125,
+  "departmentDistribution": {
+    "General": 82,
+    "Operations": 11,
+    "Information and Technology": 9,
+    "Growth": 7,
+    "Experience": 6,
+    "Finance and Accounting": 4,
+    "Human Resource and Development": 3,
+    "Management Office": 3
+  },
+  "subscriptionTypes": {
+    "free": 68,
+    "paid": 45,
+    "freemium": 12
+  },
+  "sampleApplications": [
+    {
+      "name": "Google Workspace",
+      "department": "General",
+      "departmentCode": "GNR",
+      "category": "communication",
+      "subscriptionType": "paid",
+      "status": "active",
+      "websiteUrl": "https://workspace.google.com",
+      "description": "Company email, calendar, and documents"
+    },
+    {
+      "name": "Slack",
+      "department": "General",
+      "departmentCode": "GNR",
+      "category": "communication",
+      "subscriptionType": "paid",
+      "status": "active",
+      "websiteUrl": "https://slack.com",
+      "description": "Internal team communication"
+    },
+    {
+      "name": "Canva",
+      "department": "Experience",
+      "departmentCode": "EXP",
+      "category": "design",
+      "subscriptionType": "paid",
+      "status": "active",
+      "websiteUrl": "https://canva.com",
+      "description": "Visual asset design and marketing materials"
+    },
+    {
+      "name": "Visual Studio Code",
+      "department": "Information and Technology",
+      "departmentCode": "ITE",
+      "category": "development",
+      "subscriptionType": "free",
+      "status": "active",
+      "websiteUrl": "https://code.visualstudio.com",
+      "description": "Code editor for software engineering"
+    },
+    {
+      "name": "Salesforce",
+      "department": "Growth",
+      "departmentCode": "GRW",
+      "category": "marketing",
+      "subscriptionType": "paid",
+      "status": "active",
+      "websiteUrl": "https://salesforce.com",
+      "description": "Customer relationship management"
+    },
+    {
+      "name": "Xero",
+      "department": "Finance and Accounting",
+      "departmentCode": "FAC",
+      "category": "finance",
+      "subscriptionType": "paid",
+      "status": "active",
+      "websiteUrl": "https://xero.com",
+      "description": "Cloud accounting software"
+    },
+    {
+      "name": "Talenta",
+      "department": "Human Resource and Development",
+      "departmentCode": "HRD",
+      "category": "operations",
+      "subscriptionType": "paid",
+      "status": "active",
+      "websiteUrl": "https://talenta.co",
+      "description": "HR and payroll management"
+    },
+    {
+      "name": "Trello",
+      "department": "Operations",
+      "departmentCode": "OPS",
+      "category": "productivity",
+      "subscriptionType": "free",
+      "status": "active",
+      "websiteUrl": "https://trello.com",
+      "description": "Task and project management boards"
+    }
+  ]
+}
