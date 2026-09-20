@@ -64,7 +64,8 @@ CORE uses a **Modular Monolith** architecture.
 
 ### Database
 
-- PostgreSQL
+- PostgreSQL (PGlite embedded WASM for local development; PostgreSQL for production)
+
 
 ### ORM
 

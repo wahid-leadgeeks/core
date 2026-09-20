@@ -21,6 +21,28 @@ export interface UserSession {
   departmentCode?: string;
 }
 
+export interface GoogleTokens {
+  accessToken: string;
+  refreshToken?: string;
+  expiresAt: number;
+  scope: string;
+  idToken?: string;
+}
+
+export interface GoogleUser {
+  id: string;
+  email: string;
+  name: string;
+  picture?: string;
+}
+
+export interface GoogleAuthSession {
+  user: GoogleUser;
+  tokens: GoogleTokens;
+  createdAt: string;
+}
+
+
 export type DomainResource =
   | 'identity'
   | 'groups'

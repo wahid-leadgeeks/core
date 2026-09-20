@@ -5,6 +5,7 @@ export * from '../../domains/assets/schema';
 export * from '../../domains/access/schema';
 export * from '../../domains/software/schema';
 export * from '../../domains/audit/schema';
+export * from '../../domains/automation/schema';
 
 // Convenient naming aliases
 import {
@@ -29,6 +30,9 @@ import {
 import {
   auditEvents,
 } from '../../domains/audit/schema';
+import {
+  sheetsSyncLogs,
+} from '../../domains/automation/schema';
 
 export {
   accountRoles as account_roles,
@@ -39,6 +43,8 @@ export {
   deviceAssignments as device_assignments,
   deviceCredentials as device_credentials,
   auditEvents as audit_events,
+  sheetsSyncLogs as sheets_sync_logs,
   applicationCategoryEnum as appCategoryEnum,
   applicationStatusEnum as appStatusEnum,
 };
+
