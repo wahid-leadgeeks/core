@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Shield, ArrowRight, AlertCircle, Lock } from 'lucide-react';
 import { ROLE_OPTIONS } from '@/components/layout/RoleSwitcher';
 import { StatusDot } from '@/components/feedback/StatusDot';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 function LoginForm() {
   const router = useRouter();
@@ -41,34 +42,30 @@ function LoginForm() {
   };
 
   const handleGoogleOAuth = () => {
-    if (process.env.NEXT_PUBLIC_GOOGLE_OAUTH_ENABLED === 'true') {
-      window.location.href = `/api/auth/google?callbackUrl=${encodeURIComponent(callbackUrl)}`;
-    } else {
-      setError('Google Workspace OAuth configured for enterprise deployment. Use Quick-Switch below for local testing.');
-    }
+    window.location.href = `/api/auth/google?callbackUrl=${encodeURIComponent(callbackUrl)}`;
   };
 
   return (
-    <div className="w-full max-w-xl p-6 sm:p-8 rounded-2xl border border-slate-800 bg-[#0a0f1d] shadow-2xl text-slate-100">
+    <div className="w-full max-w-xl p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0a0f1d] shadow-xl dark:shadow-2xl text-slate-900 dark:text-slate-100">
       {/* Brand Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-900 border border-slate-700/80 mb-3 shadow-inner">
-          <Shield className="w-6 h-6 text-emerald-400" />
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 mb-3 shadow-inner">
+          <Shield className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
         </div>
-        <div className="flex items-center justify-center gap-2 font-mono text-xs text-emerald-400 mb-1">
+        <div className="flex items-center justify-center gap-2 font-mono text-xs text-emerald-600 dark:text-emerald-400 mb-1 font-medium">
           <StatusDot status="active" pulse={true} size="sm" />
           <span>CALM INFRASTRUCTURE COMMAND CENTER</span>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-100 font-sans">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 font-sans">
           CORE Authentication
         </h1>
-        <p className="text-xs text-slate-400 mt-1 font-mono">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">
           Company Operations, Resources & Environment
         </p>
       </div>
 
       {error && (
-        <div className="mb-6 p-3.5 rounded-lg bg-rose-950/40 border border-rose-800/80 text-rose-300 text-xs flex items-center gap-2.5">
+        <div className="mb-6 p-3.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/80 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2.5">
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>{error}</span>
         </div>
@@ -79,7 +76,7 @@ function LoginForm() {
         <button
           type="button"
           onClick={handleGoogleOAuth}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-700/80 rounded-xl text-sm font-medium text-slate-200 bg-slate-900/80 hover:bg-slate-800 hover:border-slate-600 transition-all shadow-sm"
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-300 dark:border-slate-700/80 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 transition-all shadow-sm"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -105,10 +102,10 @@ function LoginForm() {
 
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-800" />
+          <div className="w-full border-t border-slate-200 dark:border-slate-800" />
         </div>
         <div className="relative flex justify-center text-[10px] uppercase font-mono">
-          <span className="bg-[#0a0f1d] px-3 text-slate-500">
+          <span className="bg-white dark:bg-[#0a0f1d] px-3 text-slate-500">
             Local Development & Test Quick-Switch (5 Roles)
           </span>
         </div>
@@ -122,15 +119,15 @@ function LoginForm() {
             type="button"
             disabled={loadingRole !== null}
             onClick={() => handleRoleLogin(opt.role)}
-            className="w-full text-left p-3 rounded-xl border border-slate-800/80 bg-slate-900/40 hover:bg-slate-900/90 hover:border-slate-700 transition-all flex items-center justify-between group"
+            className="w-full text-left p-3 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/80 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-900/90 hover:border-slate-300 dark:hover:border-slate-700 transition-all flex items-center justify-between group shadow-sm"
           >
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 group-hover:text-emerald-400 transition-colors">
+              <div className="mt-0.5 p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                 <Shield className="w-3.5 h-3.5" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-sm text-slate-200 group-hover:text-white">
+                  <span className="font-semibold text-sm text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white">
                     {opt.persona}
                   </span>
                   <span
@@ -138,19 +135,19 @@ function LoginForm() {
                   >
                     {opt.label}
                   </span>
-                  <span className="text-[10px] font-mono text-slate-500">
+                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-500">
                     ({opt.dept})
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-400 mt-0.5">
+                <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">
                   {opt.scope}
                 </div>
               </div>
             </div>
 
-            <div className="text-slate-500 group-hover:text-slate-200 group-hover:translate-x-0.5 transition-all">
+            <div className="text-slate-400 group-hover:text-slate-700 dark:text-slate-500 dark:group-hover:text-slate-200 group-hover:translate-x-0.5 transition-all">
               {loadingRole === opt.role ? (
-                <div className="w-4 h-4 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-emerald-600 dark:border-emerald-400 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <ArrowRight className="w-4 h-4" />
               )}
@@ -160,7 +157,7 @@ function LoginForm() {
       </div>
 
       {/* Footer System Notice */}
-      <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-500">
+      <div className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-500">
         <span className="flex items-center gap-1.5">
           <Lock size={12} className="text-slate-400" />
           Server-Side RBAC
@@ -173,7 +170,10 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 bg-[#070b14]">
+    <main className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-[#070b14] relative transition-colors duration-150">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <Suspense fallback={<div className="text-xs font-mono text-slate-500">Loading CORE Command Center...</div>}>
         <LoginForm />
       </Suspense>

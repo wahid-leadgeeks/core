@@ -66,11 +66,11 @@ export default function GroupDetailPage() {
         <div className="space-y-4">
           <Link
             href="/groups"
-            className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-white"
+            className="inline-flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
           >
             <ArrowLeft size={14} /> Back to Google Groups
           </Link>
-          <div className="p-6 rounded-xl border border-rose-900/60 bg-rose-950/20 text-rose-300 font-mono text-sm">
+          <div className="p-6 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-300 font-mono text-sm">
             {error || 'Group not found'}
           </div>
         </div>
@@ -94,11 +94,11 @@ export default function GroupDetailPage() {
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'owner':
-        return <Crown size={12} className="text-purple-400" />;
+        return <Crown size={12} className="text-purple-600 dark:text-purple-400" />;
       case 'manager':
-        return <ShieldCheck size={12} className="text-blue-400" />;
+        return <ShieldCheck size={12} className="text-blue-600 dark:text-blue-400" />;
       default:
-        return <Users size={12} className="text-slate-500" />;
+        return <Users size={12} className="text-slate-400 dark:text-slate-500" />;
     }
   };
 
@@ -115,28 +115,28 @@ export default function GroupDetailPage() {
         />
 
         {/* Group Header Summary */}
-        <div className="p-6 rounded-xl border border-slate-800 bg-[#0a0f1d] shadow-lg space-y-4">
+        <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0a0f1d] shadow-sm dark:shadow-lg space-y-4">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div className="space-y-1.5">
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h1 className="text-2xl font-bold font-sans text-slate-100">
+                <h1 className="text-2xl font-bold font-sans text-slate-900 dark:text-slate-100">
                   {group.name}
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono bg-emerald-950 text-emerald-400 border border-emerald-800">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800 font-medium">
                   {members.length} Members
                 </span>
-                <span className="flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                  <Clock size={11} className="text-amber-400" />
+                <span className="flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium">
+                  <Clock size={11} className="text-amber-500 dark:text-amber-400" />
                   Pending Sync
                 </span>
               </div>
 
-              <div className="flex items-center gap-4 text-xs font-mono text-slate-400 flex-wrap">
+              <div className="flex items-center gap-4 text-xs font-mono text-slate-500 dark:text-slate-400 flex-wrap">
                 <div className="flex items-center gap-1.5">
                   <Mail size={13} className="text-slate-400" />
-                  <span className="text-slate-200">{group.email}</span>
+                  <span className="text-slate-800 dark:text-slate-200">{group.email}</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-slate-400">
+                <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                   <span>Source: Spreadsheet</span>
                 </div>
               </div>
@@ -145,13 +145,13 @@ export default function GroupDetailPage() {
             <div className="flex items-center gap-2 flex-wrap">
               <Link
                 href={`/groups/matrix?filterGroup=${encodeURIComponent(group.name)}`}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-800 text-xs font-mono text-emerald-300 hover:bg-emerald-900 transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/80 dark:border-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors text-xs font-mono font-medium shadow-sm"
               >
                 <Grid size={13} /> View in Matrix
               </Link>
               <button
                 onClick={fetchDetail}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 hover:text-white transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors shadow-sm"
               >
                 <RefreshCw size={13} />
                 Refresh
@@ -160,7 +160,7 @@ export default function GroupDetailPage() {
           </div>
 
           {group.description && (
-            <p className="pt-2 border-t border-slate-800/60 text-xs text-slate-400 font-sans">
+            <p className="pt-2 border-t border-slate-100 dark:border-slate-800/60 text-xs text-slate-600 dark:text-slate-400 font-sans">
               {group.description}
             </p>
           )}
@@ -169,18 +169,18 @@ export default function GroupDetailPage() {
         {/* Member Roster Search */}
         <div className="flex items-center justify-between gap-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-2.5 text-slate-500" size={15} />
+            <Search className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500" size={15} />
             <input
               type="text"
               placeholder="Search member accounts..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-9 pr-10 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-slate-700 font-sans"
+              className="w-full pl-9 pr-10 py-1.5 rounded-lg bg-white dark:bg-slate-900/80 border border-slate-300 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-slate-400 dark:focus:border-slate-700 font-sans shadow-sm"
             />
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="absolute right-2.5 top-2 p-0.5 rounded text-slate-400 hover:text-white transition-colors"
+                className="absolute right-2.5 top-2 p-0.5 rounded text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors"
                 title="Clear search"
                 aria-label="Clear search input"
               >
@@ -188,16 +188,16 @@ export default function GroupDetailPage() {
               </button>
             )}
           </div>
-          <span className="text-xs font-mono text-slate-500">
+          <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
             Showing {filteredMembers.length} of {members.length} members
           </span>
         </div>
 
         {/* Members Table */}
-        <div className="border border-slate-800 rounded-xl overflow-hidden bg-[#0a0f1d]">
+        <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-[#0a0f1d] shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-slate-900/80 border-b border-slate-800 text-slate-400 uppercase">
+              <thead className="bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase">
                 <tr>
                   <th className="py-3 px-4">Member Name</th>
                   <th className="py-3 px-4">Email</th>
@@ -207,39 +207,39 @@ export default function GroupDetailPage() {
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-sans">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-sans">
                 {filteredMembers.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-12 text-center text-slate-500 font-mono text-xs">
+                    <td colSpan={6} className="py-12 text-center text-slate-500 dark:text-slate-400 font-mono text-xs">
                       No members match search query &quot;{query}&quot;.
                     </td>
                   </tr>
                 ) : (
                   filteredMembers.map((m: any) => (
-                    <tr key={m.membershipId || m.accountId} className="hover:bg-slate-800/40 group">
+                    <tr key={m.membershipId || m.accountId} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 group">
                       <td className="py-3 px-4">
                         <Link href={`/accounts/${m.accountId}`} className="block">
-                          <div className="font-semibold text-slate-200 group-hover:text-emerald-400 transition-colors">
+                          <div className="font-semibold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                             {m.fullName}
                           </div>
-                          <div className="text-[11px] text-slate-500 font-mono">
+                          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
                             @{m.displayName}
                           </div>
                         </Link>
                       </td>
-                      <td className="py-3 px-4 font-mono text-slate-300">
+                      <td className="py-3 px-4 font-mono text-slate-700 dark:text-slate-300">
                         {m.email}
                       </td>
                       <td className="py-3 px-4">
-                        <span className="font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 text-[11px]">
+                        <span className="font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[11px]">
                           {m.departmentCode}
                         </span>
                       </td>
-                      <td className="py-3 px-4 font-mono text-slate-400">
+                      <td className="py-3 px-4 font-mono text-slate-600 dark:text-slate-400">
                         {m.roleName}
                       </td>
                       <td className="py-3 px-4 font-mono">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-800 border border-slate-700 text-slate-200 capitalize">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 capitalize font-medium">
                           {getRoleIcon(m.groupRole)}
                           {m.groupRole}
                         </span>
@@ -247,7 +247,7 @@ export default function GroupDetailPage() {
                       <td className="py-3 px-4 text-right">
                         <Link
                           href={`/accounts/${m.accountId}`}
-                          className="text-emerald-400 hover:underline font-mono text-xs inline-flex items-center gap-0.5"
+                          className="text-emerald-600 dark:text-emerald-400 hover:underline font-mono text-xs inline-flex items-center gap-0.5 font-medium"
                         >
                           View Account <ChevronRight size={12} />
                         </Link>

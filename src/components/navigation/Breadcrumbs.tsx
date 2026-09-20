@@ -31,14 +31,14 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' 
               {index > 0 && (
                 <ChevronRight
                   size={12}
-                  className="text-slate-600 shrink-0 select-none"
+                  className="text-slate-400 dark:text-slate-600 shrink-0 select-none"
                   aria-hidden="true"
                 />
               )}
 
               {isLast ? (
                 <span
-                  className="text-slate-200 font-semibold truncate max-w-[200px] sm:max-w-xs"
+                  className="text-slate-900 dark:text-slate-200 font-semibold truncate max-w-[200px] sm:max-w-xs"
                   aria-current="page"
                 >
                   {item.label}
@@ -46,13 +46,13 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' 
               ) : item.href ? (
                 <Link
                   href={item.href}
-                  className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 rounded px-1 -mx-1"
+                  className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500 rounded px-1 -mx-1"
                 >
-                  {isFirst && <Home size={12} className="text-slate-500 hover:text-emerald-400 transition-colors" />}
+                  {isFirst && <Home size={12} className="text-slate-400 dark:text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" />}
                   <span>{item.label}</span>
                 </Link>
               ) : (
-                <span className="text-slate-400">{item.label}</span>
+                <span className="text-slate-500 dark:text-slate-400">{item.label}</span>
               )}
             </li>
           );

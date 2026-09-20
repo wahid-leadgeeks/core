@@ -16,6 +16,14 @@ export async function POST(req: NextRequest) {
     });
 
     clearSessionCookie(response);
+    response.cookies.set('core_google_session', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 0,
+      expires: new Date(0),
+    });
 
     if (session) {
       await logAuditEvent({
