@@ -11,6 +11,9 @@ import './e2e/05-credential-encryption.test.mjs';
 import './e2e/06-spreadsheet-ingestion.test.mjs';
 import './e2e/07-crud-api-and-pages.test.mjs';
 import './e2e/08-asset-lifecycle-mutations.test.mjs';
+import './e2e/09-google-sheets-integration.test.mjs';
+import './e2e/10-sheets-sync-and-rollback.test.mjs';
+
 
 // Parse command line arguments
 const args = process.argv.slice(2);

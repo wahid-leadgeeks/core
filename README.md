@@ -27,7 +27,17 @@ Company Operations, Resources & Environment
 | `lint` | Run linter |
 | `typecheck` | Run type checker |
 | `db:migrate` | Run database migrations |
-| `db:seed` | Seed database |
+| `db:seed` | Seed canonical reference data |
+| `db:import` | Ingest spreadsheet data into database |
+
+## Local Development Database
+
+CORE uses **PGlite** (`@electric-sql/pglite` and `drizzle-orm/pglite`) for local development:
+- **Zero-setup**: Embedded WASM PostgreSQL running directly in-process — no Docker or PostgreSQL server required.
+- **Persistence**: Persisted locally to `./data/core_db`.
+- **Production parity**: 100% PostgreSQL-compatible SQL dialect, custom enums, foreign keys, and atomic transactions.
+- **Production**: Configure `DATABASE_URL` in `.env` to connect to external PostgreSQL (e.g. Neon, Supabase, AWS RDS).
+
 
 ## Documentation
 
@@ -61,3 +71,10 @@ CORE replaces 3 spreadsheets containing:
 - 125 software applications
 
 See [docs/data/spreadsheet-mapping.md](docs/data/spreadsheet-mapping.md) for the full column-level mapping.
+
+### Linked Google Spreadsheet
+
+CORE is connected directly to the live company Google Spreadsheet:
+- **Spreadsheet**: [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1vWFuIU_LxCqyQ7Bn5N2K4gBDcIcnmogYA_ALiucWxbo) (`1vWFuIU_LxCqyQ7Bn5N2K4gBDcIcnmogYA_ALiucWxbo`)
+- **Integration**: Native Google Sheets API v4 REST client matching `/home/noah/project/onboarding-copilot`.
+
