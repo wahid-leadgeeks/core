@@ -108,52 +108,52 @@ export default function AssignDeviceModal({
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to update device assignment');
+        const data = await res.json();
+        throw new Error(data.message || 'Operation failed');
       }
 
       onSuccess();
       onClose();
     } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred');
+      setError(err.message || 'Network error occurred');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl my-8">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl my-8 text-slate-900 dark:text-slate-100">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-3">
-            <div className={`p-2.5 rounded-lg ${mode === 'assign' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'} border`}>
+            <div className={`p-2.5 rounded-lg ${mode === 'assign' ? 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20' : 'bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20'} border`}>
               {mode === 'assign' ? <UserCheck className="h-5 w-5" /> : <UserX className="h-5 w-5" />}
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-slate-100">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                 {mode === 'assign' ? 'Assign Hardware' : 'Return Hardware'}
               </h2>
-              <p className="text-xs text-slate-400 font-mono">{assetNumber}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">{assetNumber}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Mode Selector */}
-        <div className="mt-4 grid grid-cols-2 gap-2 p-1 bg-slate-950 rounded-lg border border-slate-800">
+        <div className="mt-4 grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
           <button
             type="button"
             onClick={() => setMode('assign')}
             className={`py-1.5 text-xs font-medium rounded-md transition ${
               mode === 'assign'
-                ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             Assign Account
@@ -163,8 +163,8 @@ export default function AssignDeviceModal({
             onClick={() => setMode('return')}
             className={`py-1.5 text-xs font-medium rounded-md transition ${
               mode === 'return'
-                ? 'bg-slate-800 text-amber-400 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white dark:bg-slate-800 text-amber-600 dark:text-amber-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             Return to Pool
@@ -172,7 +172,7 @@ export default function AssignDeviceModal({
         </div>
 
         {error && (
-          <div className="mt-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
+          <div className="mt-4 p-3 rounded-lg bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -182,8 +182,8 @@ export default function AssignDeviceModal({
           {mode === 'assign' ? (
             <>
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
-                  Primary Assignee (PIC 1) <span className="text-rose-400">*</span>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+                  Primary Assignee (PIC 1) <span className="text-rose-500">*</span>
                 </label>
                 {fetchingAccounts ? (
                   <div className="py-2 text-xs text-slate-400">Loading accounts...</div>
@@ -192,7 +192,7 @@ export default function AssignDeviceModal({
                     value={selectedAccountId}
                     onChange={(e) => setSelectedAccountId(e.target.value)}
                     required
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   >
                     <option value="">-- Select Company Member --</option>
                     {accounts.map((acc) => (
@@ -205,13 +205,13 @@ export default function AssignDeviceModal({
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
                   Secondary Custodian (PIC 2 - Optional)
                 </label>
                 <select
                   value={selectedCustodianId}
                   onChange={(e) => setSelectedCustodianId(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 >
                   <option value="">-- None --</option>
                   {accounts
@@ -225,26 +225,26 @@ export default function AssignDeviceModal({
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Assignment Notes</label>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Assignment Notes</label>
                 <textarea
                   rows={2}
                   placeholder="e.g. Deployed for Q1 engineering project"
                   value={assignNotes}
                   onChange={(e) => setAssignNotes(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
             </>
           ) : (
             <>
               {currentAssignee?.assigneeName && (
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs space-y-1">
-                  <div className="text-slate-400">Currently Assigned to:</div>
-                  <div className="text-slate-100 font-medium flex items-center gap-1.5">
+                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs space-y-1">
+                  <div className="text-slate-500 dark:text-slate-400">Currently Assigned to:</div>
+                  <div className="text-slate-900 dark:text-slate-100 font-medium flex items-center gap-1.5">
                     <User className="h-3.5 w-3.5 text-slate-400" />
                     <span>{currentAssignee.assigneeName}</span>
                     {currentAssignee.assigneeEmail && (
-                      <span className="text-slate-400 font-mono text-[11px]">
+                      <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">
                         ({currentAssignee.assigneeEmail})
                       </span>
                     )}
@@ -253,13 +253,13 @@ export default function AssignDeviceModal({
               )}
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
-                  Next Status for Device <span className="text-rose-400">*</span>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+                  Next Status for Device <span className="text-rose-500">*</span>
                 </label>
                 <select
                   value={targetStatus}
                   onChange={(e) => setTargetStatus(e.target.value as 'available' | 'reserve')}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-amber-500"
                 >
                   <option value="available">Available (Ready for immediate redeployment)</option>
                   <option value="reserve">Reserve (Stored in IT inventory / buffer)</option>
@@ -267,23 +267,23 @@ export default function AssignDeviceModal({
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Return / Check-in Notes</label>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Return / Check-in Notes</label>
                 <textarea
                   rows={2}
                   placeholder="e.g. Device returned upon team transfer; wiped and checked."
                   value={returnNotes}
                   onChange={(e) => setReturnNotes(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-amber-500"
                 />
               </div>
             </>
           )}
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition"
+              className="px-4 py-2 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
             >
               Cancel
             </button>
