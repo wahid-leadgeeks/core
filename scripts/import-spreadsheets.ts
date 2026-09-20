@@ -20,6 +20,7 @@ import * as dotenv from 'dotenv';
 import * as schema from '../src/lib/db/schema';
 import { encryptPin, isEncryptedPin } from '../src/lib/crypto/cipher';
 import { seedReferenceData } from './seed-reference';
+import { db as appDb, client as appClient, shouldUsePglite } from '../src/lib/db/client';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -1595,16 +1596,10 @@ export async function verifyPostgresIngestion(sql: any): Promise<EmpiricalVerifi
 // ============================================================================
 
 async function main() {
+  const isRemote = !shouldUsePglite();
   console.log('======================================================================');
-  console.log(' CORE (Company Operations, Resources & Environment)');
-  console.log(' Milestone 3 — Spreadsheet Ingestion Engine (PGlite Embedded)');
+  console.log(` Milestone 3 — Spreadsheet Ingestion Engine (${isRemote ? 'Remote PostgreSQL' : 'PGlite Embedded'})`);
   console.log('======================================================================\n');
-
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-  const client = new PGlite(dataDir);
-  const db = drizzle(client, { schema });
 
   const sql = async (strings: TemplateStringsArray, ...values: any[]) => {
     let query = strings[0];
@@ -1613,15 +1608,18 @@ async function main() {
       params.push(values[i]);
       query += '$' + (i + 1) + strings[i + 1];
     }
-    const res = await client.query(query, params);
+    if (isRemote) {
+      return (appClient as any).unsafe(query, params);
+    }
+    const res = await (appClient as PGlite).query(query, params);
     return res.rows as any[];
   };
 
   try {
-    const summary = await importSpreadsheets(db);
+    const summary = await importSpreadsheets(appDb);
 
     // Execute Live PostgreSQL verification
-    console.log('\n[Verification] 🔍 Querying embedded PGlite database for empirical attestation...');
+    console.log(`\n[Verification] 🔍 Querying ${isRemote ? 'remote PostgreSQL' : 'embedded PGlite'} database for empirical attestation...`);
     const v = await verifyPostgresIngestion(sql);
 
     const badge = (passed: boolean) => (passed ? '\x1b[32m[PASS]\x1b[0m' : '\x1b[31m[FAIL]\x1b[0m');
@@ -1648,7 +1646,11 @@ async function main() {
     console.error('❌ Ingestion failed with error:', error);
     process.exit(1);
   } finally {
-    await client.close();
+    if (isRemote) {
+      await (appClient as any).end?.();
+    } else {
+      await (appClient as any).close?.();
+    }
   }
 }
 
@@ -1658,8 +1660,12 @@ if (
     process.argv[1].endsWith('import-spreadsheets.js') ||
     process.argv[1].includes('import-spreadsheets'))
 ) {
-  main().catch((err) => {
-    console.error('Fatal error during execution:', err);
-    process.exit(1);
-  });
+  main()
+    .then(() => {
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error('Fatal error during execution:', err);
+      process.exit(1);
+    });
 }
