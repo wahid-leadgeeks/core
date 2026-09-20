@@ -131,16 +131,14 @@ export async function seedReferenceData(dbInstance: any) {
   });
 }
 
+import { db as appDb, client as appClient, shouldUsePglite } from '../src/lib/db/client';
+
 async function main() {
-  console.log('🔄 Connecting to PGlite database for reference seed...');
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-  const client = new PGlite(dataDir);
-  const db = drizzle(client, { schema });
+  const isRemote = !shouldUsePglite();
+  console.log(`🔄 Connecting to database for reference seed (${isRemote ? 'Remote PostgreSQL' : 'PGlite Embedded'})...`);
 
   try {
-    const summary = await seedReferenceData(db);
+    const summary = await seedReferenceData(appDb);
     console.log('\n🎉 Reference data seeding complete and verified!');
     console.log(`   - Departments: ${summary.departments}/8`);
     console.log(`   - Account Roles: ${summary.accountRoles}/5`);
@@ -149,7 +147,11 @@ async function main() {
     console.error('❌ Seeding failed:', error);
     process.exit(1);
   } finally {
-    await client.close();
+    if (isRemote) {
+      await (appClient as any).end?.();
+    } else {
+      await (appClient as any).close?.();
+    }
   }
 }
 
@@ -159,8 +161,12 @@ if (
     process.argv[1].endsWith('seed-reference.js') ||
     process.argv[1].includes('seed-reference'))
 ) {
-  main().catch((err) => {
-    console.error('Unexpected error during seeding:', err);
-    process.exit(1);
-  });
+  main()
+    .then(() => {
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error('Unexpected error during seeding:', err);
+      process.exit(1);
+    });
 }
