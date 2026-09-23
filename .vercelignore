@@ -1,0 +1,4 @@
+.env
+.env*.local
+data/core_db/
+.git

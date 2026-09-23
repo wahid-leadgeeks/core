@@ -2,6 +2,9 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getMockUser, createMockSession, isMockAuthEnabled } from '@/lib/auth/mock';
 import { setSessionCookie } from '@/lib/auth/session';
 import { logAuditEvent } from '@/domains/audit/service';
+import { db } from '@/lib/db/client';
+import * as schema from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,6 +29,19 @@ export async function POST(req: NextRequest) {
       }
 
       if (session) {
+        // Attempt to bind session ID to existing database account if present
+        try {
+          const [acc] = await db
+            .select()
+            .from(schema.accounts)
+            .where(eq(schema.accounts.email, session.email.toLowerCase().trim()))
+            .limit(1);
+          if (acc) {
+            session = { ...session, id: acc.id };
+          }
+        } catch {
+          // Proceed with session ID if database lookup is unavailable
+        }
         const response = NextResponse.json({
           success: true,
           user: session,

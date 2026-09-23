@@ -92,16 +92,44 @@ export async function logAuditEvent(
       ...(input.entityId && !validEntityUuid ? { rawEntityId: input.entityId } : {}),
     };
 
-    await db.insert(auditEvents).values({
-      id: eventId,
-      actorId: validActorUuid,
-      action: input.action,
-      entityType: input.entityType,
-      entityId: validEntityUuid,
-      metadata: Object.keys(dbMeta).length > 0 ? dbMeta : null,
-      ipAddress: input.ipAddress || null,
-      createdAt: new Date(),
-    });
+    try {
+      await db.insert(auditEvents).values({
+        id: eventId,
+        actorId: validActorUuid,
+        action: input.action,
+        entityType: input.entityType,
+        entityId: validEntityUuid,
+        metadata: Object.keys(dbMeta).length > 0 ? dbMeta : null,
+        ipAddress: input.ipAddress || null,
+        createdAt: new Date(),
+      });
+    } catch (insertError: any) {
+      // If foreign key constraint fails (e.g. actorId or entityId not yet in accounts/entities table),
+      // retry with nullable foreign keys to preserve immutable audit logging without crashing requests
+      if (
+        insertError?.code === '23503' ||
+        insertError?.message?.includes('foreign key constraint') ||
+        insertError?.message?.includes('violates foreign key')
+      ) {
+        const fallbackMeta = {
+          ...dbMeta,
+          actorIdFallback: input.actorId || undefined,
+          entityIdFallback: input.entityId || undefined,
+        };
+        await db.insert(auditEvents).values({
+          id: eventId,
+          actorId: null,
+          action: input.action,
+          entityType: input.entityType,
+          entityId: null,
+          metadata: Object.keys(fallbackMeta).length > 0 ? fallbackMeta : null,
+          ipAddress: input.ipAddress || null,
+          createdAt: new Date(),
+        });
+      } else {
+        throw insertError;
+      }
+    }
   } catch (error) {
     // In development or unit testing without live PostgreSQL, proceed with in-memory record
     if (process.env.NODE_ENV === 'production') {
