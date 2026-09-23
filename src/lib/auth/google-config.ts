@@ -122,6 +122,16 @@ export const AUTHORITATIVE_SPREADSHEETS = {
       { title: 'Drop Down', gid: '', description: 'Master reference codes and categories' },
     ],
   },
+  standards: {
+    key: 'standards',
+    name: 'Company Laptop Requirements and Standards',
+    domain: 'assets',
+    envVar: 'GOOGLE_SHEETS_STANDARDS_ID',
+    defaultId: '1zEcKzMvq6SDuevwmP3YbiAv3MBE6AnXnQ1g-TB_n9TE',
+    sheets: [
+      { title: 'Standards', gid: '0', description: 'Hardware requirements and procurement standards' },
+    ],
+  },
 } as const;
 
 export type SpreadsheetDomainKey = keyof typeof AUTHORITATIVE_SPREADSHEETS;
@@ -148,6 +158,12 @@ export function getSpreadsheetIdForDomain(domainKey?: SpreadsheetDomainKey | str
       AUTHORITATIVE_SPREADSHEETS.software.defaultId
     );
   }
+  if (domainKey === 'standards') {
+    return (
+      process.env.GOOGLE_SHEETS_STANDARDS_ID?.trim() ||
+      AUTHORITATIVE_SPREADSHEETS.standards.defaultId
+    );
+  }
   // Default to accounts
   return (
     process.env.GOOGLE_SHEETS_ACCOUNTS_ID?.trim() ||
@@ -167,7 +183,7 @@ export function getLinkedSpreadsheetUrl(domainKey?: SpreadsheetDomainKey | strin
 }
 
 export function getAllLinkedSpreadsheets(): LinkedSpreadsheetInfo[] {
-  const keys: SpreadsheetDomainKey[] = ['accounts', 'devices', 'software'];
+  const keys: SpreadsheetDomainKey[] = ['accounts', 'devices', 'software', 'standards'];
   return keys.map((key) => {
     const meta = AUTHORITATIVE_SPREADSHEETS[key];
     const id = getSpreadsheetIdForDomain(key);

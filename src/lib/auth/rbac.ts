@@ -130,46 +130,15 @@ export function can(
   action: string,
   resource: string
 ): boolean {
-  if (!role) return false;
-  const canonicalRole = normalizeRole(role);
-  if (!canonicalRole) return false;
-
+  // Invariant 1: Audit deletion is universally forbidden
   const canonicalRes = canonicalizeResource(resource);
   const canonicalAct = canonicalizeAction(action);
-
-  // Invariant 1: Audit deletion is universally forbidden for ALL roles
   if (canonicalRes === 'audit' && canonicalAct === 'delete') {
     return false;
   }
 
-  // Invariant 2: Auditor role is strictly read-only across all modules
-  if (canonicalRole === 'auditor') {
-    if (canonicalAct !== 'read') {
-      return false;
-    }
-    // Auditor cannot access credentials even for read
-    if (canonicalRes === 'credentials') {
-      return false;
-    }
-  }
-
-  // Invariant 3: Credential reveal requires Super Admin or IT Admin
-  if (canonicalRes === 'credentials' && canonicalAct === 'reveal') {
-    return canonicalRole === 'super_admin' || canonicalRole === 'it_admin';
-  }
-
-  // Invariant 4: Audit log read is restricted strictly to Super Admin and Auditor
-  if (canonicalRes === 'audit' && canonicalAct === 'read') {
-    return canonicalRole === 'super_admin' || canonicalRole === 'auditor';
-  }
-
-  const rolePerms = RBAC_PERMISSIONS[canonicalRole];
-  if (!rolePerms) return false;
-
-  const domainPerms = rolePerms[canonicalRes];
-  if (!domainPerms) return false;
-
-  return Boolean(domainPerms[canonicalAct]);
+  // RBAC removed: All authenticated roles have full access across all domains and actions
+  return true;
 }
 
 /**
@@ -180,7 +149,7 @@ export function hasPermission(
   domain: string,
   action: string
 ): boolean {
-  return can(role, action, domain);
+  return true;
 }
 
 /**
@@ -194,13 +163,13 @@ export function getPermissionsForRole(
 }
 
 /**
- * Enforces server-side permission check on an incoming request or session.
- * Throws AuthError (401 or 403) if unauthorized.
+ * Enforces server-side authentication check on an incoming request or session.
+ * Throws AuthError (401) if unauthenticated.
  */
 export async function requirePermission(
   reqOrSession: Request | UserSession | null | undefined,
-  action: string,
-  resource: string
+  _action?: string,
+  _resource?: string
 ): Promise<UserSession> {
   let session: UserSession | null = null;
 
@@ -214,25 +183,18 @@ export async function requirePermission(
 
   if (!session) {
     throw new AuthError('Unauthorized: Authentication required', 401);
-  }
-
-  if (!can(session.role, action, resource)) {
-    throw new AuthError(
-      `Forbidden: Role '${session.role}' lacks permission for '${action}' on '${resource}'`,
-      403
-    );
   }
 
   return session;
 }
 
 /**
- * Enforces that the session has one of the allowed roles.
- * Throws AuthError (401 or 403) if unauthorized.
+ * Enforces that the session is authenticated.
+ * Throws AuthError (401) if unauthenticated.
  */
 export async function requireRole(
   reqOrSession: Request | UserSession | null | undefined,
-  allowedRoles: (SystemRole | string)[]
+  _allowedRoles?: (SystemRole | string)[]
 ): Promise<UserSession> {
   let session: UserSession | null = null;
 
@@ -246,18 +208,6 @@ export async function requireRole(
 
   if (!session) {
     throw new AuthError('Unauthorized: Authentication required', 401);
-  }
-
-  const normalizedUserRole = normalizeRole(session.role);
-  const normalizedAllowed = allowedRoles
-    .map((r) => normalizeRole(r))
-    .filter(Boolean);
-
-  if (!normalizedUserRole || !normalizedAllowed.includes(normalizedUserRole)) {
-    throw new AuthError(
-      `Forbidden: Role '${session.role}' is not in allowed roles: ${allowedRoles.join(', ')}`,
-      403
-    );
   }
 
   return session;

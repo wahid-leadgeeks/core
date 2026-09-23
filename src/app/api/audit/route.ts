@@ -13,16 +13,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Restricted exclusively to Super Admin and Auditor
-    if (session.role !== 'super_admin' && session.role !== 'auditor') {
-      return NextResponse.json(
-        {
-          error: 'Forbidden',
-          message: 'Forbidden: Audit log is restricted to Super Admin and Auditor',
-        },
-        { status: 403 }
-      );
-    }
+    // All authenticated users can view audit trail (RBAC removed)
 
     const { searchParams } = new URL(req.url);
     const entityType = searchParams.get('entityType') || undefined;

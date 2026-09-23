@@ -25,9 +25,7 @@ export default function PinRevealModal({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState(30);
-
-  const isAuthorized = userRole === 'super_admin' || userRole === 'it_admin';
-
+  const isAuthorized = true; // All authenticated users are authorized (RBAC removed)
   useEffect(() => {
     if (!isOpen) {
       setRevealedPin(null);

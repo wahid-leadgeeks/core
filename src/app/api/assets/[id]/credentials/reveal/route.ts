@@ -53,17 +53,7 @@ export async function POST(
       );
     }
 
-    // Role check: Credential reveal requires Super Admin or IT Admin privileges
-    if (session.role !== 'super_admin' && session.role !== 'it_admin') {
-      return NextResponse.json(
-        {
-          error: 'Forbidden',
-          message:
-            'Forbidden: Credential reveal requires Super Admin or IT Admin privileges',
-        },
-        { status: 403 }
-      );
-    }
+    // All authenticated users can reveal credentials (RBAC removed)
 
     const resolvedParams = await context.params;
     const { id } = resolvedParams;
