@@ -14,16 +14,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized: authentication required' }, { status: 401 });
     }
 
-    // Only IT Admin and Super Admin have permission to import company resource data
-    if (user.role !== 'it_admin' && user.role !== 'super_admin') {
-      return NextResponse.json(
-        {
-          error: 'Forbidden: Insufficient permissions to trigger database ingestion',
-          role: user.role,
-        },
-        { status: 403 }
-      );
-    }
+    // All authenticated users can trigger spreadsheet ingestion (RBAC removed)
 
     const body = await request.json().catch(() => ({}));
     const targetDomain = body.domain || 'all'; // 'all' | 'accounts' | 'devices' | 'software'

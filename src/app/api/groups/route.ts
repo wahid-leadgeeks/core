@@ -12,13 +12,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Asset Admin & Software Admin are forbidden from accessing groups per RBAC
-  if (user.role === 'asset_admin' || user.role === 'software_admin') {
-    return NextResponse.json(
-      { error: 'Forbidden', message: `Forbidden: ${user.role} cannot access groups` },
-      { status: 403 }
-    );
-  }
+  // All authenticated users can access groups (RBAC removed)
 
   try {
     let groups = await db.select().from(schema.googleGroups);

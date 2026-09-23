@@ -21,13 +21,7 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // RBAC: Asset Admin and Software Admin cannot access groups
-  if (user.role === 'asset_admin' || user.role === 'software_admin') {
-    return NextResponse.json(
-      { error: 'Forbidden', message: `Forbidden: ${user.role} cannot access groups` },
-      { status: 403 }
-    );
-  }
+  // All authenticated users can access groups (RBAC removed)
 
   const resolvedParams = await context.params;
   const identifier = decodeURIComponent(resolvedParams.id).trim();
