@@ -40,7 +40,6 @@ export default function DashboardPage() {
   });
 
   const [recentAudit, setRecentAudit] = useState<RecentAuditEvent[]>([]);
-  const [auditForbidden, setAuditForbidden] = useState(false);
 
   useEffect(() => {
     // Fetch live domain summary counts
@@ -62,15 +61,9 @@ export default function DashboardPage() {
       });
     });
 
-    // Fetch recent audit stream if permitted by role (ADR-005)
+    // Fetch recent audit stream
     fetch('/api/audit?limit=3')
-      .then((r) => {
-        if (r.status === 403) {
-          setAuditForbidden(true);
-          return null;
-        }
-        return r.ok ? r.json() : null;
-      })
+      .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (data?.events) {
           setRecentAudit(data.events.slice(0, 3));
@@ -268,15 +261,7 @@ export default function DashboardPage() {
                 </Link>
               </div>
 
-              {auditForbidden ? (
-                <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 text-center space-y-1.5 py-6">
-                  <Lock size={20} className="mx-auto text-slate-400" />
-                  <p className="text-xs text-slate-700 dark:text-slate-300 font-mono">Access Gated (ADR-005)</p>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                    Audit event stream is restricted exclusively to Super Admin and Auditor roles.
-                  </p>
-                </div>
-              ) : recentAudit.length === 0 ? (
+              {recentAudit.length === 0 ? (
                 <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 text-center space-y-1 py-6">
                   <CheckCircle2 size={20} className="mx-auto text-slate-400" />
                   <p className="text-xs text-slate-600 dark:text-slate-400 font-mono">Audit stream logging active</p>

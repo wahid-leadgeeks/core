@@ -97,7 +97,7 @@ export async function GET(request: Request) {
         id: account.id,
         email: account.email,
         displayName: account.displayName || account.fullName || googleUser.name,
-        role: 'it_admin', // Standard admin access for authenticated organization accounts
+        role: 'super_admin', // Full administrator access for authenticated Google Workspace accounts
         departmentId: account.departmentId || undefined,
       };
     }
@@ -110,7 +110,7 @@ export async function GET(request: Request) {
       id: googleUser.id,
       email: googleUser.email,
       displayName: googleUser.name,
-      role: 'it_admin',
+      role: 'super_admin',
     };
   }
 

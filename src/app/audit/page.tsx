@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { TableSkeleton } from '@/components/feedback/Skeleton';
+import { Pagination } from '@/components/navigation/Pagination';
 
 interface AuditItem {
   id: string;
@@ -34,10 +35,11 @@ export default function AuditPage() {
   const { user } = useAuth();
   const [events, setEvents] = useState<AuditItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [forbidden, setForbidden] = useState(false);
   const [actionFilter, setActionFilter] = useState('ALL');
   const [entityTypeFilter, setEntityTypeFilter] = useState('ALL');
   const [query, setQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // JSON Modal State
@@ -47,6 +49,10 @@ export default function AuditPage() {
   useEffect(() => {
     fetchAuditEvents();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, actionFilter, entityTypeFilter]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -70,17 +76,13 @@ export default function AuditPage() {
     setQuery('');
     setActionFilter('ALL');
     setEntityTypeFilter('ALL');
+    setCurrentPage(1);
   };
 
   const fetchAuditEvents = async () => {
     setLoading(true);
-    setForbidden(false);
     try {
       const res = await fetch('/api/audit');
-      if (res.status === 403) {
-        setForbidden(true);
-        return;
-      }
       if (res.ok) {
         const data = await res.json();
         setEvents(data.events || []);
@@ -131,6 +133,12 @@ export default function AuditPage() {
     return matchesAction && matchesEntity && matchesQuery;
   });
 
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  const paginatedEvents = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
   const handleCopyJson = (obj: any) => {
     navigator.clipboard.writeText(JSON.stringify(obj, null, 2));
     setCopiedJson(true);
@@ -148,24 +156,6 @@ export default function AuditPage() {
       return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800';
     return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700';
   };
-
-  if (forbidden) {
-    return (
-      <AppShell>
-        <div className="max-w-2xl mx-auto py-16 text-center space-y-4">
-          <div className="inline-flex p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-600 dark:text-rose-400">
-            <Lock size={32} />
-          </div>
-          <h2 className="text-xl font-mono font-bold text-slate-900 dark:text-slate-100">
-            Audit Trail Unavailable
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 font-sans leading-relaxed">
-            Unable to load the audit trail. Please check your network connection and session status.
-          </p>
-        </div>
-      </AppShell>
-    );
-  }
 
   return (
     <AppShell>
@@ -318,7 +308,7 @@ export default function AuditPage() {
                     </td>
                   </tr>
                 ) : (
-                  filtered.map((ev) => (
+                  paginatedEvents.map((ev) => (
                     <tr key={ev.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="py-2.5 px-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                         {new Date(ev.createdAt).toLocaleString()}
@@ -363,6 +353,17 @@ export default function AuditPage() {
               </tbody>
             </table>
           </div>
+
+          {filtered.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              itemName="audit events"
+            />
+          )}
         </div>
 
         {/* JSON Metadata Viewer Modal */}

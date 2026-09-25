@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { StatusBadge } from '@/components/feedback/StatusBadge';
 import { CardSkeleton } from '@/components/feedback/Skeleton';
+import { Pagination } from '@/components/navigation/Pagination';
 
 interface ApplicationItem {
   id: string;
@@ -38,11 +39,17 @@ export default function SoftwarePage() {
   const [selectedDept, setSelectedDept] = useState('ALL');
   const [subTypeFilter, setSubTypeFilter] = useState('ALL');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 9;
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchSoftware();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, selectedDept, subTypeFilter, selectedCategory]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -70,6 +77,7 @@ export default function SoftwarePage() {
     setSelectedDept('ALL');
     setSubTypeFilter('ALL');
     setSelectedCategory('ALL');
+    setCurrentPage(1);
   };
 
   const fetchSoftware = async () => {
@@ -126,6 +134,12 @@ export default function SoftwarePage() {
 
     return matchesDept && matchesSub && matchesCategory && matchesQuery;
   });
+
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  const paginatedApps = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const getSubBadgeClasses = (type?: string | null) => {
     switch (type?.toLowerCase()) {
@@ -299,7 +313,7 @@ export default function SoftwarePage() {
               </div>
             </div>
           ) : (
-            filtered.map((app) => (
+            paginatedApps.map((app) => (
               <div
                 key={app.id}
                 className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0a0f1d] hover:border-slate-300 dark:hover:border-slate-700 shadow-sm dark:shadow-none hover:shadow-md transition-all flex flex-col justify-between space-y-4 group"
@@ -366,6 +380,20 @@ export default function SoftwarePage() {
             ))
           )}
         </div>
+
+        {/* Software Pagination */}
+        {filtered.length > 0 && (
+          <div className="border border-slate-200 dark:border-slate-800/80 rounded-xl overflow-hidden bg-white dark:bg-[#0a0f1d] shadow-sm">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              itemName="software applications"
+            />
+          </div>
+        )}
       </div>
     </AppShell>
   );
