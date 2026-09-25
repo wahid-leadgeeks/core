@@ -390,8 +390,8 @@ export default function DashboardPage() {
             </div>
 
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800/60 text-[11px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-              <span>RBAC Mode</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-medium">Edge Guard Active</span>
+              <span>Access Architecture</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium">Google Workspace Unified</span>
             </div>
           </div>
         </div>
