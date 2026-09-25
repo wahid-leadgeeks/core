@@ -145,11 +145,12 @@ export default function AssetDetailPage() {
     { id: 'history', label: 'Audit History', count: auditHistory.length },
   ];
 
-  const canRevealPin = user?.role === 'super_admin' || user?.role === 'it_admin';
-  const canUpdate = user?.role === 'super_admin' || user?.role === 'it_admin' || user?.role === 'asset_admin';
-  const canAssign = user?.role === 'super_admin' || user?.role === 'it_admin' || user?.role === 'asset_admin';
-  const canRotatePin = user?.role === 'super_admin' || user?.role === 'it_admin' || user?.role === 'asset_admin';
-  const canDecommission = user?.role === 'super_admin' || user?.role === 'it_admin';
+  // All authenticated users are administrators
+  const canRevealPin = true;
+  const canUpdate = true;
+  const canAssign = true;
+  const canRotatePin = true;
+  const canDecommission = true;
 
   return (
     <AppShell>

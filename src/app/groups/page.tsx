@@ -6,6 +6,7 @@ import Link from 'next/link';
 import AppShell from '@/components/layout/AppShell';
 import { Grid, RefreshCw, Mail, Users, Clock, Search, ChevronRight, X, RotateCcw } from 'lucide-react';
 import { CardSkeleton } from '@/components/feedback/Skeleton';
+import { Pagination } from '@/components/navigation/Pagination';
 
 interface GroupItem {
   id: string;
@@ -21,11 +22,17 @@ export default function GroupsPage() {
   const [groups, setGroups] = useState<GroupItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchGroups();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -61,6 +68,12 @@ export default function GroupsPage() {
     const q = query.toLowerCase().trim();
     return !q || g.name.toLowerCase().includes(q) || g.email.toLowerCase().includes(q);
   });
+
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  const paginatedGroups = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <AppShell>
@@ -148,7 +161,7 @@ export default function GroupsPage() {
               </div>
             </div>
           ) : (
-            filtered.map((group) => (
+            paginatedGroups.map((group) => (
               <div
                 key={group.id}
                 className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0a0f1d] hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 group shadow-sm"
@@ -204,6 +217,20 @@ export default function GroupsPage() {
             ))
           )}
         </div>
+
+        {/* Groups Pagination */}
+        {filtered.length > 0 && (
+          <div className="border border-slate-200 dark:border-slate-800/80 rounded-xl overflow-hidden bg-white dark:bg-[#0a0f1d] shadow-sm">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              itemName="Google Groups"
+            />
+          </div>
+        )}
       </div>
     </AppShell>
   );

@@ -7,6 +7,7 @@ import AppShell from '@/components/layout/AppShell';
 import { Search, Mail, Building, Shield, RefreshCw, ChevronRight, X, RotateCcw } from 'lucide-react';
 import { StatusBadge } from '@/components/feedback/StatusBadge';
 import { TableSkeleton } from '@/components/feedback/Skeleton';
+import { Pagination } from '@/components/navigation/Pagination';
 
 interface AccountItem {
   id: string;
@@ -30,11 +31,17 @@ export default function AccountsPage() {
   const [selectedDept, setSelectedDept] = useState('ALL');
   const [selectedRole, setSelectedRole] = useState('ALL');
   const [selectedType, setSelectedType] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchAccounts();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, selectedDept, selectedRole, selectedType]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -59,6 +66,7 @@ export default function AccountsPage() {
     setSelectedDept('ALL');
     setSelectedRole('ALL');
     setSelectedType('ALL');
+    setCurrentPage(1);
   };
 
   const fetchAccounts = async () => {
@@ -94,6 +102,12 @@ export default function AccountsPage() {
       (a.previousEmail && a.previousEmail.toLowerCase().includes(q));
     return matchesDept && matchesRole && matchesType && matchesQuery;
   });
+
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  const paginatedAccounts = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const getRoleBadgeClasses = (roleName: string) => {
     const lower = roleName.toLowerCase();
@@ -279,7 +293,7 @@ export default function AccountsPage() {
                     </td>
                   </tr>
                 ) : (
-                  filtered.map((acct) => (
+                  paginatedAccounts.map((acct) => (
                     <tr
                       key={acct.id}
                       className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group cursor-pointer"
@@ -352,6 +366,17 @@ export default function AccountsPage() {
               </tbody>
             </table>
           </div>
+
+          {filtered.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              itemName="accounts"
+            />
+          )}
         </div>
       </div>
     </AppShell>

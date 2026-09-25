@@ -21,6 +21,7 @@ import { StatusBadge } from '@/components/feedback/StatusBadge';
 import { CardSkeleton } from '@/components/feedback/Skeleton';
 import PinRevealModal from '@/components/assets/PinRevealModal';
 import ProvisionDeviceModal from '@/components/assets/ProvisionDeviceModal';
+import { Pagination } from '@/components/navigation/Pagination';
 
 interface AssetItem {
   id: string;
@@ -63,6 +64,8 @@ export default function AssetsPage() {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [brandFilter, setBrandFilter] = useState('ALL');
   const [deptFilter, setDeptFilter] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // PIN Reveal modal state
@@ -70,11 +73,16 @@ export default function AssetsPage() {
   const [selectedAssetForPin, setSelectedAssetForPin] = useState<{ id: string; assetNumber: string } | null>(null);
   const [provisionModalOpen, setProvisionModalOpen] = useState(false);
 
-  const canProvision = user?.role === 'super_admin' || user?.role === 'it_admin' || user?.role === 'asset_admin';
+  // All authenticated users are administrators
+  const canProvision = true;
 
   useEffect(() => {
     fetchAssets();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, statusFilter, brandFilter, deptFilter]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -99,6 +107,7 @@ export default function AssetsPage() {
     setStatusFilter('ALL');
     setBrandFilter('ALL');
     setDeptFilter('ALL');
+    setCurrentPage(1);
   };
 
   const fetchAssets = async () => {
@@ -140,6 +149,12 @@ export default function AssetsPage() {
     return matchesStatus && matchesBrand && matchesDept && matchesQuery;
   });
 
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  const paginatedAssets = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
   const handleOpenPinModal = (assetId: string, assetNumber: string, e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -147,7 +162,7 @@ export default function AssetsPage() {
     setPinModalOpen(true);
   };
 
-  const canRevealPin = user?.role === 'super_admin' || user?.role === 'it_admin';
+  const canRevealPin = true;
 
   return (
     <AppShell>
@@ -316,7 +331,7 @@ export default function AssetsPage() {
               </div>
             </div>
           ) : (
-            filtered.map((dev) => (
+            paginatedAssets.map((dev) => (
               <div
                 key={dev.id}
                 className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0a0f1d] hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 group shadow-sm"
@@ -389,7 +404,7 @@ export default function AssetsPage() {
                   <button
                     onClick={(e) => handleOpenPinModal(dev.id, dev.assetNumber, e)}
                     className="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 text-amber-700 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-800 text-[11px] font-medium transition-colors shadow-sm"
-                    title={canRevealPin ? 'Reveal Encrypted PIN' : 'Gated to Super Admin & IT Admin'}
+                    title="Reveal Encrypted PIN"
                   >
                     <Key size={12} />
                     <span>PIN Vault</span>
@@ -406,6 +421,20 @@ export default function AssetsPage() {
             ))
           )}
         </div>
+
+        {/* Assets Pagination */}
+        {filtered.length > 0 && (
+          <div className="border border-slate-200 dark:border-slate-800/80 rounded-xl overflow-hidden bg-white dark:bg-[#0a0f1d] shadow-sm">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              itemName="hardware devices"
+            />
+          </div>
+        )}
 
         {/* Dedicated Secure PIN Reveal Modal */}
         {selectedAssetForPin && (

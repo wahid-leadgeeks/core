@@ -12,13 +12,10 @@ import {
   Laptop,
   Layers,
   ShieldCheck,
-  Lock,
   X,
   Database,
   FileSpreadsheet,
-  ExternalLink,
 } from 'lucide-react';
-import { useAuth } from '@/lib/auth/AuthContext';
 import { StatusDot } from '@/components/feedback/StatusDot';
 
 interface SidebarProps {
@@ -39,19 +36,6 @@ export const NAV_ITEMS = [
 
 export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onCloseMobile }) => {
   const pathname = usePathname();
-  const { user } = useAuth();
-  const role = user?.role || 'super_admin';
-
-  // Permission checks for navigation items
-  const isNavRestricted = (item: typeof NAV_ITEMS[0]) => {
-    if (item.domain === 'audit') {
-      return role !== 'super_admin' && role !== 'auditor';
-    }
-    if (item.domain === 'groups') {
-      return role === 'asset_admin' || role === 'software_admin';
-    }
-    return false;
-  };
 
   return (
     <aside
@@ -100,24 +84,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onCloseMobile }) =
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-                const restricted = isNavRestricted(item);
-
-                if (restricted) {
-                  return (
-                    <li key={item.href}>
-                      <div
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-400/80 dark:text-slate-400/60 cursor-not-allowed select-none bg-slate-100/60 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/50"
-                        title="Restricted for current role"
-                      >
-                        <div className="flex items-center gap-3">
-                          <Icon size={16} className="text-slate-400 dark:text-slate-500" />
-                          <span>{item.label}</span>
-                        </div>
-                        <Lock size={12} className="text-slate-400" />
-                      </div>
-                    </li>
-                  );
-                }
 
                 return (
                   <li key={item.href}>

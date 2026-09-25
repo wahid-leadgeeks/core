@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { DetailSkeleton } from '@/components/feedback/Skeleton';
+import { Pagination } from '@/components/navigation/Pagination';
 
 export default function GroupDetailPage() {
   const params = useParams();
@@ -29,6 +30,12 @@ export default function GroupDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query]);
 
   const fetchDetail = useCallback(async () => {
     if (!id) return;
@@ -90,6 +97,12 @@ export default function GroupDetailPage() {
       m.departmentCode?.toLowerCase().includes(q)
     );
   });
+
+  const totalPages = Math.ceil(filteredMembers.length / pageSize) || 1;
+  const paginatedMembers = filteredMembers.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const getRoleIcon = (role: string) => {
     switch (role) {
@@ -215,7 +228,7 @@ export default function GroupDetailPage() {
                     </td>
                   </tr>
                 ) : (
-                  filteredMembers.map((m: any) => (
+                  paginatedMembers.map((m: any) => (
                     <tr key={m.membershipId || m.accountId} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 group">
                       <td className="py-3 px-4">
                         <Link href={`/accounts/${m.accountId}`} className="block">
@@ -258,6 +271,17 @@ export default function GroupDetailPage() {
               </tbody>
             </table>
           </div>
+
+          {filteredMembers.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filteredMembers.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              itemName="group members"
+            />
+          )}
         </div>
       </div>
     </AppShell>

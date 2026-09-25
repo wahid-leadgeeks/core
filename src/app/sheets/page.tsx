@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { StatusBadge } from '@/components/feedback/StatusBadge';
 import { OpenSpreadsheetConsole } from '@/components/sheets/OpenSpreadsheetConsole';
+import { Pagination } from '@/components/navigation/Pagination';
 
 interface LinkedSheetInfo {
   key: string;
@@ -66,6 +67,12 @@ export default function SheetsSyncPage() {
   const [logs, setLogs] = useState<SheetsSyncLog[]>([]);
   const [logsLoading, setLogsLoading] = useState(false);
   const [filterAction, setFilterAction] = useState<'ALL' | 'push' | 'pull' | 'rollback'>('ALL');
+  const [currentLogPage, setCurrentLogPage] = useState(1);
+  const logsPageSize = 8;
+
+  useEffect(() => {
+    setCurrentLogPage(1);
+  }, [filterAction]);
 
   // Active Pull State
   const [pullTargetKey, setPullTargetKey] = useState<string>('accounts');
@@ -247,6 +254,12 @@ export default function SheetsSyncPage() {
     if (filterAction === 'ALL') return true;
     return l.action === filterAction;
   });
+
+  const totalLogPages = Math.ceil(filteredLogs.length / logsPageSize) || 1;
+  const paginatedLogs = filteredLogs.slice(
+    (currentLogPage - 1) * logsPageSize,
+    currentLogPage * logsPageSize
+  );
 
   const getDomainIcon = (domain: string) => {
     switch (domain) {
@@ -750,7 +763,7 @@ export default function SheetsSyncPage() {
                     </td>
                   </tr>
                 ) : (
-                  filteredLogs.map((log) => {
+                  paginatedLogs.map((log) => {
                     const canUndo =
                       log.status === 'applied' &&
                       log.previousCondition &&
@@ -830,6 +843,17 @@ export default function SheetsSyncPage() {
               </tbody>
             </table>
           </div>
+
+          {filteredLogs.length > 0 && (
+            <Pagination
+              currentPage={currentLogPage}
+              totalPages={totalLogPages}
+              totalItems={filteredLogs.length}
+              pageSize={logsPageSize}
+              onPageChange={setCurrentLogPage}
+              itemName="sync data logs"
+            />
+          )}
         </div>
 
         {/* ROLLBACK CONFIRMATION MODAL */}

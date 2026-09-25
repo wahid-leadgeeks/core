@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { TableSkeleton } from '@/components/feedback/Skeleton';
+import { Pagination } from '@/components/navigation/Pagination';
 
 interface MatrixMembership {
   groupId: string;
@@ -49,11 +50,17 @@ export default function MembershipMatrixPage() {
   const [query, setQuery] = useState('');
   const [selectedDept, setSelectedDept] = useState('ALL');
   const [hoveredCell, setHoveredCell] = useState<{ accountId: string; groupId: string } | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchMatrix();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, selectedDept]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,6 +82,7 @@ export default function MembershipMatrixPage() {
   const resetFilters = () => {
     setQuery('');
     setSelectedDept('ALL');
+    setCurrentPage(1);
   };
 
   const fetchMatrix = async () => {
@@ -105,6 +113,12 @@ export default function MembershipMatrixPage() {
       row.email?.toLowerCase().includes(q);
     return matchesDept && matchesQuery;
   });
+
+  const totalPages = Math.ceil(filteredMatrix.length / pageSize) || 1;
+  const paginatedMatrix = filteredMatrix.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const renderCellIndicator = (m: MatrixMembership) => {
     if (!m.isMember) {
@@ -300,7 +314,7 @@ export default function MembershipMatrixPage() {
                     </td>
                   </tr>
                 ) : (
-                  filteredMatrix.map((row) => {
+                  paginatedMatrix.map((row) => {
                     const isRowHovered = hoveredCell?.accountId === row.accountId;
                     return (
                       <tr
@@ -354,6 +368,17 @@ export default function MembershipMatrixPage() {
               </tbody>
             </table>
           </div>
+
+          {filteredMatrix.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filteredMatrix.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              itemName="matrix accounts"
+            />
+          )}
         </div>
       </div>
     </AppShell>
