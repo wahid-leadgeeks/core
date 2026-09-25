@@ -5,7 +5,6 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, LogOut } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { RoleSwitcher } from './RoleSwitcher';
 import { ThemeToggle } from './ThemeToggle';
 
 interface TopbarProps {
@@ -62,10 +61,9 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenMobile }) => {
         </div>
       </div>
 
-      {/* Right section: Theme toggle + Role switcher + user pill + logout */}
+      {/* Right section: Theme toggle + user pill + logout */}
       <div className="flex items-center gap-2.5 sm:gap-3">
         <ThemeToggle />
-        <RoleSwitcher />
 
         {user && (
           <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">

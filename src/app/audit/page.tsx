@@ -149,7 +149,7 @@ export default function AuditPage() {
     return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700';
   };
 
-  if (forbidden || (user && user.role !== 'super_admin' && user.role !== 'auditor')) {
+  if (forbidden) {
     return (
       <AppShell>
         <div className="max-w-2xl mx-auto py-16 text-center space-y-4">
@@ -157,16 +157,11 @@ export default function AuditPage() {
             <Lock size={32} />
           </div>
           <h2 className="text-xl font-mono font-bold text-slate-900 dark:text-slate-100">
-            Audit Trail Access Restricted
+            Audit Trail Unavailable
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 font-sans leading-relaxed">
-            Per server-side RBAC policy (ADR-005), the audit trail is restricted exclusively to{' '}
-            <span className="text-slate-900 dark:text-slate-200 font-semibold">Super Admin</span> and{' '}
-            <span className="text-slate-900 dark:text-slate-200 font-semibold">Auditor</span> roles.
+            Unable to load the audit trail. Please check your network connection and session status.
           </p>
-          <div className="pt-2 text-xs font-mono text-slate-500 dark:text-slate-400">
-            Current role: <span className="text-amber-600 dark:text-amber-400 uppercase font-semibold">{user?.role || 'Restricted'}</span>
-          </div>
         </div>
       </AppShell>
     );
